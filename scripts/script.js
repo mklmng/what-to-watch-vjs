@@ -3478,6 +3478,7 @@ document.querySelector("#watched").addEventListener("click",function(){
         <p class="film-director"><span>Directed by:</span> ${film.director}</p>
         <p class="film-genre"><span>Genres:</span> ${genres}</p>
         <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
+        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
       </li>
     `    
   }).join("");
@@ -3516,6 +3517,7 @@ document.querySelector("#times").addEventListener("click",function(){
         <p class="film-director"><span>Directed by:</span> ${film.director}</p>
         <p class="film-genre"><span>Genres:</span> ${genres}</p>
         <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
+        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
       </li>
     `    
   }).join("");
@@ -3562,6 +3564,7 @@ document.querySelector("#min-decade").addEventListener("change",function(event){
         <p class="film-director"><span>Directed by:</span> ${film.director}</p>
         <p class="film-genre"><span>Genres:</span> ${genres}</p>
         <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
+        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
       </li>
     `    
   }).join("");
@@ -3610,6 +3613,7 @@ document.querySelector("#max-decade").addEventListener("change",function(event){
         <p class="film-director"><span>Directed by:</span> ${film.director}</p>
         <p class="film-genre"><span>Genres:</span> ${genres}</p>
         <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
+        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
       </li>
     `    
   }).join("");
@@ -3652,6 +3656,7 @@ document.querySelector("#genres").addEventListener("change", function (event){
         <p class="film-director"><span>Directed by:</span> ${film.director}</p>
         <p class="film-genre"><span>Genres:</span> ${genres}</p>
         <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
+        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
       </li>
     `    
   }).join("");
@@ -3702,7 +3707,7 @@ function showAll(){
 	    <p class="film-director"><span>Directed by:</span> ${film.director}</p>
 	    <p class="film-genre"><span>Genres:</span> ${genres}</p>
       <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
-      <a id="${film.id}" class="film-trailer" href="" data-trailer="${film.trailer}">Watch trailer</a>
+      <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
 	  </li>
 	`    
 	}).join("");
