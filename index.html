@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1">
+<link rel="stylesheet" href="styles/styles.css">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<div class="container">
+	<div id="main-filter" class="filter">
+		<label for="watched">Hide films I have already watched</label>
+		<input type="checkbox" name="watched" id="watched"> 
+	</div>
+
+	<div id="times">
+		<p>How much time do you have?</p>	
+		<button class="film-times" data-runtime="90">1h 30min</button>
+		<button class="film-times" data-runtime="120">2h</button>
+		<button class="film-times" data-runtime="150">2h 30min</button>
+		<button class="film-times" data-runtime="180">3h</button>
+		<button class="film-times" data-runtime="99999">All the time in the world</button>
+	</div>
+	
+	<nav id="genres"></nav>
+
+	<nav id="decades">
+		<p>Which era are you interested on?</p>
+		<label for="min-decade">From</label>
+		<select name="decades" id="min-decade"></select>
+		<label for="max-decade">To</label>
+		<select name="decades" id="max-decade"></select>
+	</nav>
+
+	<div id="results"></div>
+
+	<ul id="films" class="row"></ul>
+
+</div>
+<script src="scripts/script.js"></script>
+</body>
