@@ -3,8 +3,8 @@ var globalSearch = {
   genres: {
   },
   decade: {
-  	minDecade: 1920,
-  	maxDecade: 2020
+    minDecade: 1920,
+    maxDecade: 2020
   },
   watched: true,
 }
@@ -13,11 +13,11 @@ var allGenres =
 ["action","animation","adventure","biography","comedy","drama","horror","mystery","sci-fi","thriller"];
 
 document.querySelector("#genres").innerHTML = allGenres.map(
-	function(genre){
+  function(genre){
     return `
     <div class="genre-selector">
         <input id="${genre}" type="checkbox" class="genre-items" value="${genre}">
-        <label for="${genre}">${genre}</label>		
+        <label for="${genre}">${genre}</label>    
     </div>  
     `    
   }).join("");
@@ -3354,6 +3354,27 @@ document.querySelector("#genres").innerHTML = allGenres.map(
     }
   ];
 
+
+const renderFilms = (films) => {
+  document.getElementById("films").innerHTML = films.map(function(film){
+    var genres = film.genres.join(", ");
+    var fullTime = convertTime(film.runtime);
+    return `
+      <li class="col-md-4">
+        <p><span>Title:</span> ${film.title}</p>
+        <p><span>Year:</span> ${film.year}</p>
+        <p class="film-director"><span>Directed by:</span> ${film.director}</p>
+        <p class="film-genre"><span>Genres:</span> ${genres}</p>
+        <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
+        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
+      </li>
+    `    
+  }).join("");
+
+  document.getElementById("results").style.display = "block";
+  document.getElementById("results").innerHTML = getSpelling(films.length);
+}
+
 function searchByProperty(field){
   var item = globalSearch[field];
   var validProperties = [];
@@ -3366,11 +3387,11 @@ function filterYear(films, low, high){
 }
 
 function getFilmList(films) {
-	return (globalSearch.watched ? films : films.filter(film => film.watched === false));
+  return (globalSearch.watched ? films : films.filter(film => film.watched === false));
 }
 
 function filterByRuntime(films){
-	return films.filter(film => film.runtime <= globalSearch.runtime);
+  return films.filter(film => film.runtime <= globalSearch.runtime);
 }
 
 function filterByDecade(films){
@@ -3393,9 +3414,6 @@ var getOldestDecade = Math.floor(Array.min(filmYears)/10) * 10;
 var getNewestDecade = Math.floor(Array.max(filmYears)/10) * 10;
 var decadeIterations = ((getNewestDecade - getOldestDecade) / 10);
 
-console.log("lowest year",getOldestDecade);
-console.log("highest year",getNewestDecade);
-
 var decadeRange = [];
 var newDecade;
 
@@ -3405,19 +3423,19 @@ for (i = 0;i <= decadeIterations;i ++){
 }
 
 function generateDecades(range){ // Calculate the oldest and newest year of our database and generate the decades of our page based on these data
-	document.getElementById("min-decade").innerHTML = decadeRange.map(function(decade){
-	return `
-		<option value="${decade}">${decade}s</option>
-	`    
-	}).join("");
-	document.querySelector("#min-decade").selectedIndex = 0;
+  document.getElementById("min-decade").innerHTML = decadeRange.map(function(decade){
+  return `
+    <option value="${decade}">${decade}s</option>
+  `    
+  }).join("");
+  document.querySelector("#min-decade").selectedIndex = 0;
 
-	document.getElementById("max-decade").innerHTML = decadeRange.map(function(decade){
-	return `
-		<option value="${decade}">${decade}s</option>
-	`    
-	}).join("");
-	document.querySelector("#max-decade").selectedIndex = decadeRange.length - 1;
+  document.getElementById("max-decade").innerHTML = decadeRange.map(function(decade){
+  return `
+    <option value="${decade}">${decade}s</option>
+  `    
+  }).join("");
+  document.querySelector("#max-decade").selectedIndex = decadeRange.length - 1;
 }
 
 generateDecades(decadeRange);
@@ -3429,123 +3447,79 @@ var runtimes = document.querySelector("#times");
 var records;
 
 function getSpelling(records) {
-	if (records === 1){
-		return `<p>There is ${records} film that match your search.</p>`
-	} else if (records > 1){
-		return `<p>There are ${records} films that match your search.</p>`;
-	} 
-	return `<p>Sorry, we don't have any films that match your search.</p>`;
+  if (records === 1){
+    return `<p>There is ${records} film that match your search.</p>`
+  } else if (records > 1){
+    return `<p>There are ${records} films that match your search.</p>`;
+  } 
+  return `<p>Sorry, we don't have any films that match your search.</p>`;
 }
 
 function convertTime(time){
-	var hours = time / 60;
-	if (time < 60){
-		return `${time}mins`;
-	} 
+  var hours = time / 60;
+  if (time < 60){
+    return `${time}mins`;
+  } 
 
-	var fullTime = ((time % 60) > 0) ? `${Math.floor(hours)}h ${(time % 60)}mins` : `${hours}h`;
-	return fullTime;
+  var fullTime = ((time % 60) > 0) ? `${Math.floor(hours)}h ${(time % 60)}mins` : `${hours}h`;
+  return fullTime;
 }
 
 document.querySelector("#watched").addEventListener("click",function(){ 
-	globalSearch.watched = !globalSearch.watched; // Toggle the previously watched checkbox to filter the results
-	var filteredFilms;
+  globalSearch.watched = !globalSearch.watched; // Toggle the previously watched checkbox to filter the results
+  var filteredFilms;
 
-	if (globalSearch.runtime != false){ // Filter the original database by runtime if there's one set 
-		filteredFilms = filterByRuntime(data);
-		console.log("runtime",filteredFilms.length);
-	} else {
+  if (globalSearch.runtime != false){ // Filter the original database by runtime if there's one set 
+    filteredFilms = filterByRuntime(data);
+  } else {
     filteredFilms = data;
   }
   
   if (Object.keys(globalSearch.genres).length > 0){ // Filter by selected genres
     var selectedGenres = searchByProperty("genres");
     filteredFilms = filterByGenre(filteredFilms,selectedGenres);
-    console.log("times 3",filteredFilms);
   }
 
-	// filteredFilms = filterByDecade(filteredFilms) // Filter by decade
-	// filteredFilms = getFilmList(filterByDecade(filteredFilms)); // Fitler by watched previously or not
+  // filteredFilms = filterByDecade(filteredFilms) // Filter by decade
+  // filteredFilms = getFilmList(filterByDecade(filteredFilms)); // Fitler by watched previously or not
   filteredFilms = filterYear(getFilmList(filterByDecade(filteredFilms)),globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range
 
-	document.getElementById("films").innerHTML = filteredFilms.map(function(film){
-    var genres = film.genres.join(", ");
-    var fullTime = convertTime(film.runtime);
-    return `
-      <li class="col-md-4">
-        <p><span>Title:</span> ${film.title}</p>
-        <p><span>Year:</span> ${film.year}</p>
-        <p class="film-director"><span>Directed by:</span> ${film.director}</p>
-        <p class="film-genre"><span>Genres:</span> ${genres}</p>
-        <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
-        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
-      </li>
-    `    
-  }).join("");
+  renderFilms(filteredFilms);
 
-	records = filteredFilms.length;
-	console.log("records",records);
-
-	document.getElementById("results").style.display = "block";
-	document.getElementById("results").innerHTML = getSpelling(records);
 });
 
 document.querySelector("#times").addEventListener("click",function(){
-	globalSearch.runtime = event.target.getAttribute('data-runtime');
+  globalSearch.runtime = event.target.getAttribute('data-runtime');
   var filteredFilms = filterByRuntime(data);
 
   if (Object.keys(globalSearch.genres).length > 0){ // Filter by selected genres
     var selectedGenres = searchByProperty("genres");
     filteredFilms = filterByGenre(filteredFilms,selectedGenres);
-    console.log("times 3",filteredFilms);
   }
 
-
-	// filteredFilms = filterByDecade(filteredFilms) // Filter by decade
-	// filteredFilms = getFilmList(filteredFilms); // Fitler by watched previously or not
+  // filteredFilms = filterByDecade(filteredFilms) // Filter by decade
+  // filteredFilms = getFilmList(filteredFilms); // Fitler by watched previously or not
   // filteredFilms = filterYear(filteredFilms,globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range
 
   filteredFilms = filterYear(getFilmList(filterByDecade(filteredFilms)),globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range
+  renderFilms(filteredFilms);
 
-	document.getElementById("films").innerHTML = filteredFilms.map(function(film){
-    var genres = film.genres.join(", ");
-    var fullTime = convertTime(film.runtime);
-    return `
-      <li class="col-md-4">
-        <p><span>Title:</span> ${film.title}</p>
-        <p><span>Year:</span> ${film.year}</p>
-        <p class="film-director"><span>Directed by:</span> ${film.director}</p>
-        <p class="film-genre"><span>Genres:</span> ${genres}</p>
-        <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
-        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
-      </li>
-    `    
-  }).join("");
-
-	records = filteredFilms.length;
-	console.log("records",records);
-
-	document.getElementById("results").style.display = "block";
-	document.getElementById("results").innerHTML = getSpelling(records);
 });
 
 document.querySelector("#min-decade").addEventListener("change",function(event){
-	if (parseInt(event.target.value) > globalSearch.decade.maxDecade){ 
-		globalSearch.decade.maxDecade = parseInt(event.target.value);
-		document.querySelector("#max-decade").selectedIndex = -1;
-		document.querySelector("#max-decade").selectedIndex = document.querySelector("#min-decade").selectedIndex;
-	}
+  if (parseInt(event.target.value) > globalSearch.decade.maxDecade){ 
+    globalSearch.decade.maxDecade = parseInt(event.target.value);
+    document.querySelector("#max-decade").selectedIndex = -1;
+    document.querySelector("#max-decade").selectedIndex = document.querySelector("#min-decade").selectedIndex;
+  }
 
-	globalSearch.decade.minDecade = parseInt(event.target.value);
-
-  console.log(globalSearch.decade.minDecade,globalSearch.decade.maxDecade);
+  globalSearch.decade.minDecade = parseInt(event.target.value);
 
   var filteredFilms = filterByDecade(data); // Filter by decade
 
   if (globalSearch.runtime != false){ // Filter the original database by runtime if there's one set 
-		filteredFilms = filterByRuntime(data);
-		console.log("runtime",filteredFilms.length);
-	} 
+    filteredFilms = filterByRuntime(data);
+  } 
 
   if (Object.keys(globalSearch.genres).length > 0){ // Filter by selected genres
     var selectedGenres = searchByProperty("genres");
@@ -3554,75 +3528,35 @@ document.querySelector("#min-decade").addEventListener("change",function(event){
 
   filteredFilms = filterYear(getFilmList(filteredFilms),globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range
 
-	document.getElementById("films").innerHTML = filteredFilms.map(function(film){
-    var genres = film.genres.join(", ");
-    var fullTime = convertTime(film.runtime);
-    return `
-      <li class="col-md-4">
-        <p><span>Title:</span> ${film.title}</p>
-        <p><span>Year:</span> ${film.year}</p>
-        <p class="film-director"><span>Directed by:</span> ${film.director}</p>
-        <p class="film-genre"><span>Genres:</span> ${genres}</p>
-        <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
-        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
-      </li>
-    `    
-  }).join("");
-
-	records = filteredFilms.length;
-	console.log("records",records);
-
-	document.getElementById("results").style.display = "block";
-	document.getElementById("results").innerHTML = getSpelling(records);
+  renderFilms(filteredFilms);
 });
 
 document.querySelector("#max-decade").addEventListener("change",function(event){
   function filterByDecades(){
     if (parseInt(event.target.value) < globalSearch.decade.minDecade){
-		globalSearch.decade.maxDecade = parseInt(event.target.value);
-		event.target.selectedIndex = -1;
-		document.querySelector("#max-decade").selectedIndex = document.querySelector("#min-decade").selectedIndex;
-	}
+    globalSearch.decade.maxDecade = parseInt(event.target.value);
+    event.target.selectedIndex = -1;
+    document.querySelector("#max-decade").selectedIndex = document.querySelector("#min-decade").selectedIndex;
+  }
 
-	globalSearch.decade.maxDecade = parseInt(event.target.value);	
-	
-	if (globalSearch.runtime != false){ // Filter the original database by runtime if there's one set 
-		filteredFilms = filterByRuntime(data);
-		console.log("runtime",filteredFilms.length);
-	} else {
+  globalSearch.decade.maxDecade = parseInt(event.target.value); 
+  
+  if (globalSearch.runtime != false){ // Filter the original database by runtime if there's one set 
+    filteredFilms = filterByRuntime(data);
+  } else {
     filteredFilms = data;
   }
 
   if (Object.keys(globalSearch.genres).length > 0){ // Filter by selected genres
     var selectedGenres = searchByProperty("genres");
     filteredFilms = filterByGenre(filteredFilms,selectedGenres);
-    console.log("times 3",filteredFilms);
   }
 
-	// filteredFilms = filterByDecade(filteredFilms) // Filter by decade
-	// filteredFilms = getFilmList(filterByDecade(filteredFilms)); // Fitler by watched previously or not
+  // filteredFilms = filterByDecade(filteredFilms) // Filter by decade
+  // filteredFilms = getFilmList(filterByDecade(filteredFilms)); // Fitler by watched previously or not
   filteredFilms = filterYear(getFilmList(filterByDecade(filteredFilms)),globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range 
 
-	document.getElementById("films").innerHTML = filteredFilms.map(function(film){
-    var genres = film.genres.join(", ");
-    var fullTime = convertTime(film.runtime);
-    return `
-      <li class="col-md-4">
-        <p><span>Title:</span> ${film.title}</p>
-        <p><span>Year:</span> ${film.year}</p>
-        <p class="film-director"><span>Directed by:</span> ${film.director}</p>
-        <p class="film-genre"><span>Genres:</span> ${genres}</p>
-        <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
-        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
-      </li>
-    `    
-  }).join("");
-
-	records = filteredFilms.length;
-	console.log("records",records);
-
-	document.getElementById("results").style.display = "block";
-	document.getElementById("results").innerHTML = getSpelling(records);
+  renderFilms(filteredFilms);
   }
 
   filterByDecades();
@@ -3633,40 +3567,20 @@ document.querySelector("#max-decade").addEventListener("change",function(event){
 document.querySelector("#genres").addEventListener("change", function (event){
   var checkbox = event.target;
   globalSearch.genres[checkbox.value] = checkbox.checked;
-	var selectedGenres = searchByProperty("genres");
+  var selectedGenres = searchByProperty("genres");
   var filteredFilms;
 
-	if (globalSearch.runtime != false){ // Filter the original database by runtime if there's one set 
-		filteredFilms = filterByRuntime(data);
-		console.log("runtime",filteredFilms.length);
-	} else {
+  if (globalSearch.runtime != false){ // Filter the original database by runtime if there's one set 
+    filteredFilms = filterByRuntime(data);
+    console.log("runtime",filteredFilms.length);
+  } else {
     filteredFilms = data;
   }
 
   filteredFilms= filterByGenre(filteredFilms,selectedGenres);
   filteredFilms = filterYear(getFilmList(filterByDecade(filteredFilms)),globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range 
 
-  document.getElementById("films").innerHTML = filteredFilms.map(function(film){
-    var genres = film.genres.join(", ");
-    var fullTime = convertTime(film.runtime);
-    return `
-      <li class="col-md-4">
-        <p><span>Title:</span> ${film.title}</p>
-        <p><span>Year:</span> ${film.year}</p>
-        <p class="film-director"><span>Directed by:</span> ${film.director}</p>
-        <p class="film-genre"><span>Genres:</span> ${genres}</p>
-        <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
-        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
-      </li>
-    `    
-  }).join("");
-
-	records = filteredFilms.length;
-	console.log("records",records);
-
-	document.getElementById("results").style.display = "block";
-	document.getElementById("results").innerHTML = getSpelling(records);
-
+  renderFilms(filteredFilms);
 });
 
 
@@ -3684,8 +3598,6 @@ const watchTrailer = (trailer) => {
 document.addEventListener('click', function (event) {
   var clicked = event.target;
   if (clicked.hasAttribute('data-trailer')){ // detect click on watch trailer ctas
-    event.preventDefault();
-    console.log(clicked.getAttribute("data-trailer"));
     watchTrailer(clicked.getAttribute("data-trailer"));
   }
 
@@ -3696,24 +3608,24 @@ document.addEventListener('click', function (event) {
   };
 });
 
-function showAll(){
-	document.getElementById("films").innerHTML = data.map(function(film){
-	var genres = film.genres.join(", ");
-	var fullTime = convertTime(film.runtime);
-	return `
-	  <li class="col-md-4">
-	    <p><span>Title:</span> ${film.title}</p>
-	    <p><span>Year:</span> ${film.year}</p>
-	    <p class="film-director"><span>Directed by:</span> ${film.director}</p>
-	    <p class="film-genre"><span>Genres:</span> ${genres}</p>
+const showAll = () => {
+  document.getElementById("films").innerHTML = data.map(function(film){
+  var genres = film.genres.join(", ");
+  var fullTime = convertTime(film.runtime);
+  return `
+    <li class="col-md-4">
+      <p><span>Title:</span> ${film.title}</p>
+      <p><span>Year:</span> ${film.year}</p>
+      <p class="film-director"><span>Directed by:</span> ${film.director}</p>
+      <p class="film-genre"><span>Genres:</span> ${genres}</p>
       <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
       <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
-	  </li>
-	`    
-	}).join("");
+    </li>
+  `    
+  }).join("");
 
-	document.getElementById("results").style.display = "block";
-	document.getElementById("results").innerHTML = `<p>There are ${data.length} films on your library.</p>`;
+  document.getElementById("results").style.display = "block";
+  document.getElementById("results").innerHTML = `<p>There are ${data.length} films on your library.</p>`;
 }
 
 showAll();
