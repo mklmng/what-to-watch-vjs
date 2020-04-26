@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/preset-env": "^7.0.0",
     "babelify": "^10.0.0"
   },
   "engines": {
@@ -38,7 +38,7 @@
         "babelify",
         {
           "presets": [
-            "es2015"
+            "env"
           ]
         }
       ]
