@@ -1,7 +1,3 @@
-import require from "require";
-
-require('dotenv').config();
-
 let globalSearch = {
   runtime: false,
   genres: {
@@ -46,7 +42,8 @@ const showAll = (data) => {
       <p class="film-director"><span>Directed by:</span> ${film.director}</p>
       <p class="film-genre"><span>Genres:</span> ${genres}</p>
       <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
-      <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
+      <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">trailer</span>
+      <a class="watch-film-cta" href="https://www.justwatch.com/uk/movie/${film.whereToWatch}" target="_blank" rel="noopener noreferrer">film</a>    
     </li>
   `    
   }).join("");
@@ -65,8 +62,9 @@ const renderFilms = (films) => {
         <p class="film-director"><span>Directed by:</span> ${film.director}</p>
         <p class="film-genre"><span>Genres:</span> ${genres}</p>
         <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
-        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">Watch trailer</span>
-      </li>
+        <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">trailer</span>
+        <a class="watch-film-cta" href="https://www.justwatch.com/uk/movie/${film.whereToWatch}" target="_blank" rel="noopener noreferrer">film</a>    
+        </li>
     `    
   }).join("");
 
@@ -270,18 +268,12 @@ document.addEventListener('click', function (event) {
 
 }
 
-let req = new XMLHttpRequest();
-req.onreadystatechange = () => {
-  if (req.readyState == XMLHttpRequest.DONE) {
-  }
-};
+/*  https://gist.githubusercontent.com/mklmng/fa894dc9c86dfed34e45063adcf1b73e/raw/712976528480b8473d6ef1ec91a6f30c31f4c000/Films.json 
+fetch('https://gist.githubusercontent.com/mklmng/fa894dc9c86dfed34e45063adcf1b73e/raw/eca1b7ef5738152a227cdf55f24e54702cffb3db/Films.json' */
 
-req.open("GET", `https://api.jsonbin.io/b/${process.env.API_DB}`, true);
-req.setRequestHeader("secret-key", `${process.env.API_KEY}`);
 
-req.send();
-
-req.onload = function(){
-  let data = JSON.parse(req.responseText)
-  showAll(data);
-}
+fetch('https://gist.githubusercontent.com/mklmng/fa894dc9c86dfed34e45063adcf1b73e/raw/e2a7ab6c887f5d3df79133d228193bbcfcf6fc23/Films.json'
+).then((res) => res.json())
+  .then((json) => {
+    showAll(json);
+    })
