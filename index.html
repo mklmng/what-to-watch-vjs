@@ -17,7 +17,7 @@
 	</div>
 
 	<div id="times">
-		<p>How much time do you have?</p>	
+		<h2 class="filter-header">How much time do you have?</h2>	
 		<button class="film-times" data-runtime="90">1h 30min</button>
 		<button class="film-times" data-runtime="120">2h</button>
 		<button class="film-times" data-runtime="150">2h 30min</button>
@@ -25,10 +25,36 @@
 		<button class="film-times" data-runtime="99999">All the time in the world</button>
 	</div>
 	
-	<nav id="genres"></nav>
+	<nav id="genres">
+		<div id="main-genres">
+			<h2 class="filter-header">What genres do you like?</h2>	
+    		<div class="genre-selector">
+				<input id="action" type="checkbox" class="genre-items" value="action">
+        		<label for="action">action</label>    
+    		</div>  
+    		<div class="genre-selector">
+				<input id="comedy" type="checkbox" class="genre-items" value="comedy">
+        		<label for="comedy">comedy</label>    
+    		</div>  		
+    		<div class="genre-selector">
+				<input id="drama" type="checkbox" class="genre-items" value="drama">
+        		<label for="drama">drama</label>    
+    		</div>  
+    		<div class="genre-selector">
+				<input id="horror" type="checkbox" class="genre-items" value="horror">
+        		<label for="horror">horror</label>    
+    		</div>  
+    		<div class="genre-selector">
+				<input id="sci-fi" type="checkbox" class="genre-items" value="sci-fi">
+        		<label for="sci-fi">sci-fi</label>    
+    		</div>      		
+		</div>
+		<a class="cta-expand" href="#">See all genres</a>
+		<div id="extra-genres"></div>
+	</nav>
 
 	<nav id="decades">
-		<p>Which era are you interested on?</p>
+		<h2 class="filter-header">Which era are you interested on?</h2>
 		<label for="min-decade">From</label>
 		<select name="decades" id="min-decade"></select>
 		<label for="max-decade">To</label>

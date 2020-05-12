@@ -20,6 +20,14 @@ body.no-scroll{
 header{
     background: #000;
 }
+
+.filter-header{
+    font-size: 2rem;
+    font-weight: normal;
+    margin: 0 0 1rem;
+    padding: 0;
+}
+
 .header-main{
     font-family: 'Quantico', sans-serif;
     text-align: center;
@@ -102,13 +110,73 @@ header{
     }
 
     #genres{
-        padding: 0 0 1.6rem;
+        padding: 0;
+        border: 1px solid #CCC;
+    }
+    #main-genres,#extra-genres{
+        text-align: center;
+    }
+    .cta-expand{
+        background: #000;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        color:#FFF;
+        font-size: 1.6rem;
+        font-weight: bold;
+        padding: 0.5rem 0;
+        outline: none;
+    }
+    .cta-expand:hover{
+        color: #FF0
+    }
+    .cta-expand:focus{
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    
+    .cta-expand::after{
+        padding-left: 1rem;
+        display: inline-block;
+        content:"[ + ]";
+        color: #FF0;
+        transition: all ease-out .75s;
+    }
+    .cta-expand:hover::after{
+        color:#FFF;
+    }
+
+    
+    .cta-expand.expanded::after{
+        content:"[ - ]";
+    }
+
+    #extra-genres{
+        display: none;
+        visibility: hidden;
+        height: 0;
+        opacity: 0;
+        transition: opacity 0s height 0.75s visibilty 0.75s ease-out;
+    }
+    
+    .cta-expand.expanded + #extra-genres{
+        display: block;
+        visibility: visible;
+        height: auto;
+        opacity: 1;
     }
 
     #results{
         display: none;
         background: #CCC;
     }
+
 
 .col-md-4 > p{
     font-size: 1.6rem;
@@ -135,7 +203,13 @@ header{
     }
 
     .genre-selector{
+        text-align: center;
         width: calc(50% - 3.2rem);
+    }
+    .genre-items{
+        width: 100%;
+        display: block;
+        text-align: center;
     }
 
     .decade-selector{
@@ -154,7 +228,7 @@ header{
     }
 
     #films{	
-        padding: 2rem 0;
+        padding: 0 0;
     }
 
     #films li { 
@@ -240,7 +314,17 @@ header{
     display: none;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 767px) {
+    #results{
+        position: fixed;
+        bottom: 0;
+        width: 100vw;
+        left: 0;
+        z-index: 1;
+    }
+}
+
+@media screen and (min-width: 768px) {   
     .row{
         display: -ms-flexbox;
         display: flex;
@@ -262,6 +346,9 @@ header{
     }
     .genre-selector{
         width: 15%;
+    }
+    #extra-genres .genre-selector{
+        width: 10%;
     }
 }
 

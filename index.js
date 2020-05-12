@@ -9,18 +9,6 @@ let globalSearch = {
   watched: true,
 }
 
-let allGenres = ["action","animation","adventure","biography","comedy","drama","horror","mystery","sci-fi","thriller"];
-
-document.querySelector("#genres").innerHTML = allGenres.map(
-  function(genre){
-    return `
-    <div class="genre-selector">
-        <input id="${genre}" type="checkbox" class="genre-items" value="${genre}">
-        <label for="${genre}">${genre}</label>    
-    </div>  
-    `    
-  }).join("");
-
 const convertTime = (time) => {
   let hours = time / 60;
   if (time < 60){
@@ -119,6 +107,35 @@ const generateDecades = (range) => { // Calculate the oldest and most recent yea
 
 generateDecades(decadeRange);
 
+// Generate the extra genres
+const allGenres = data.map(film => film.genres);
+const mainGenres = ["action","comedy","drama","horror","sci-fi"]
+const extraGenres = [];
+
+for (const genreList of allGenres) {
+  for (const genre of genreList){
+    if (!extraGenres.includes(genre) && !mainGenres.includes(genre)){
+      extraGenres.push(genre);
+    }
+  }
+}
+
+extraGenres.sort();
+
+document.querySelector("#extra-genres").insertAdjacentHTML('afterbegin',extraGenres.map(
+  function(genre){
+    return `
+    <div class="genre-selector">
+        <input id="${genre}" type="checkbox" class="genre-items" value="${genre}">
+        <label for="${genre}">${genre}</label>    
+    </div>  
+    `    
+  }).join(""));
+
+document.querySelector(".cta-expand").addEventListener("click",function(){ 
+  this.classList.toggle("expanded");
+});
+
 let genres = document.querySelector("#genres");
 let decades = document.querySelector("#decades");
 let matches = document.querySelectorAll("input[type='checkbox']");
@@ -127,11 +144,11 @@ let records;
 
 const getSpelling = (records) => {
   if (records === 1){
-    return `<p>There is ${records} film that match your search.</p>`
+    return `<p>${records} film matches your search.</p>`
   } else if (records > 1){
-    return `<p>There are ${records} films that match your search.</p>`;
+    return `<p>${records} films match your search.</p>`;
   } 
-  return `<p>Sorry, we don't have any films that match your search.</p>`;
+  return `<p>Sorry, we don't have any matches for that request.</p>`;
 }
 
 document.querySelector("#watched").addEventListener("click",function(){ 
@@ -149,7 +166,10 @@ document.querySelector("#watched").addEventListener("click",function(){
     filteredFilms = filterByGenre(filteredFilms,selectedGenres);
   }
 
-  filteredFilms = filterYear(getWatchedFilms(filterByDecade(filteredFilms)),globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range
+  filteredFilms = filterByDecade(filteredFilms) // Filter by decade range
+  filteredFilms = getWatchedFilms(filterByDecade(filteredFilms)); // Filter by watched previously or not
+  filteredFilms = filterYear(filteredFilms,globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range 
+ 
   renderFilms(filteredFilms);
 
 });
@@ -213,9 +233,9 @@ document.querySelector("#max-decade").addEventListener("change",function(event){
     filteredFilms = filterByGenre(filteredFilms,selectedGenres);
   }
 
-  // filteredFilms = filterByDecade(filteredFilms) // Filter by decade range
-  // filteredFilms = getWatchedFilms(filterByDecade(filteredFilms)); // Filter by watched previously or not
-  filteredFilms = filterYear(getWatchedFilms(filterByDecade(filteredFilms)),globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range 
+  filteredFilms = filterByDecade(filteredFilms) // Filter by decade range
+  filteredFilms = getWatchedFilms(filterByDecade(filteredFilms)); // Filter by watched previously or not
+  filteredFilms = filterYear(filteredFilms,globalSearch.decade.minDecade,globalSearch.decade.maxDecade);  // Filter films by decade range 
 
   renderFilms(filteredFilms);
   }
@@ -268,11 +288,7 @@ document.addEventListener('click', function (event) {
 
 }
 
-/*  https://gist.githubusercontent.com/mklmng/fa894dc9c86dfed34e45063adcf1b73e/raw/712976528480b8473d6ef1ec91a6f30c31f4c000/Films.json 
-fetch('https://gist.githubusercontent.com/mklmng/fa894dc9c86dfed34e45063adcf1b73e/raw/eca1b7ef5738152a227cdf55f24e54702cffb3db/Films.json' */
-
-
-fetch('https://gist.githubusercontent.com/mklmng/fa894dc9c86dfed34e45063adcf1b73e/raw/e2a7ab6c887f5d3df79133d228193bbcfcf6fc23/Films.json'
+fetch('https://gist.githubusercontent.com/mklmng/fa894dc9c86dfed34e45063adcf1b73e/raw/aaebe9185fbb4b1ebcaf5343335168c9d2898f9a/Films.json'
 ).then((res) => res.json())
   .then((json) => {
     showAll(json);
