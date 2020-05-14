@@ -12,13 +12,23 @@ html{
 }
 body {
     font-size: 1.6rem;
+    background: #000;
 }
+
 body.no-scroll{
     overflow: hidden;
 }
 
+.container{
+    background: #FFF;
+}
+.dark .container{
+    background: #000;
+}
+
 header{
     background: #000;
+    position: relative;
 }
 
 .filter-header{
@@ -26,6 +36,10 @@ header{
     font-weight: normal;
     margin: 0 0 1rem;
     padding: 0;
+}
+
+body.dark #filters{
+    border:1px solid #FF0;
 }
 
 .header-main{
@@ -79,13 +93,19 @@ header{
     transform: translate(-50%, -50%);
 }
 
+#filters{
+    border-left: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+}
+
 #main-filter{
     padding: 1.6rem;
 }
 
     #times,#genres-list,#decades,#results{
         text-align: center;
-        border: 1px solid #CCC;
+        border-top: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
     }
 
     #times{
@@ -111,7 +131,8 @@ header{
 
     #genres{
         padding: 0;
-        border: 1px solid #CCC;
+        border-top: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
     }
     #main-genres,#extra-genres{
         text-align: center;
@@ -158,18 +179,14 @@ header{
     }
 
     #extra-genres{
-        display: none;
-        visibility: hidden;
-        height: 0;
-        opacity: 0;
-        transition: opacity 0s height 0.75s visibilty 0.75s ease-out;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height .75 ease-out;
     }
     
     .cta-expand.expanded + #extra-genres{
-        display: block;
-        visibility: visible;
-        height: auto;
-        opacity: 1;
+        max-height: 1000px;
+        transition: max-height .75s ease-in;
     }
 
     #results{
@@ -199,13 +216,17 @@ header{
     .genre-selector,.decade-selector{
         padding: 1.6rem;
         display: inline-block;
+    }
+
+    .genre-selector {
+        text-align: center;
+        width: calc(33.33% - 2rem);
+    }
+
+    .decade-selector{
         width: 15%;
     }
 
-    .genre-selector{
-        text-align: center;
-        width: calc(50% - 3.2rem);
-    }
     .genre-items{
         width: 100%;
         display: block;
@@ -305,13 +326,72 @@ header{
         color: #000;
     }
 
+    #results p{
+        margin: 0;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
     .filter{
-        border: 1px solid #CCC;
+        border-top: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
         text-align: center;
+    }
+    body.dark .filter{
+        border-color: #FF0;
+        color:#FFF
+    }
+
+    body.dark .filter-header, body.dark .genre-selector label, body.dark .film-card p{
+        color: #FF0;
+    }
+
+    body.dark #min-decade,body.dark #max-decade, body.dark .film-card p span{
+        color: #FFF;
+    }
+
+    body.dark #min-decade,body.dark #max-decade{
+        border: 1px solid #FF0;
+    }
+
+    body.dark #genres{
+        border-top: 1px solid #FF0;
+        border-bottom: 1px solid #FF0;
+    }
+
+    body.dark .watch-film-cta{
+        border: 1px solid #FF0;
+    }
+
+    body.dark #results{
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,444444+40,444444+80,000000+100 */
+background: rgb(0,0,0); /* Old browsers */
+background: -moz-linear-gradient(left,  rgba(0,0,0,1) 0%, rgba(68,68,68,1) 40%, rgba(68,68,68,1) 80%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(left,  rgba(0,0,0,1) 0%,rgba(68,68,68,1) 40%,rgba(68,68,68,1) 80%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to right,  rgba(0,0,0,1) 0%,rgba(68,68,68,1) 40%,rgba(68,68,68,1) 80%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 */
+
+        color: #FFF;
+        border: none;
+    }
+    body.dark #results p strong{
+        color: #FF0;
     }
 
 [data-trailer=""] { /* We only show the option of watch trailer if the trailer is available */
     display: none;
+}
+
+#theme-switcher{
+    display: block;
+    text-align: center;
+    color: #FFF;
+    background: #454141;
+    padding: 0.5rem 0;
+}
+
+body.dark #theme-switcher{
+    color: #FF0
 }
 
 @media screen and (max-width: 767px) {
@@ -325,6 +405,13 @@ header{
 }
 
 @media screen and (min-width: 768px) {   
+    #theme-switcher{
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+    }  
+
     .row{
         display: -ms-flexbox;
         display: flex;

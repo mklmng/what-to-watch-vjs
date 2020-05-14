@@ -10,57 +10,64 @@
 <div class="container">
 	<header>
 		<h1 class="header-main">What <span>to</span> Watch</h1>
-	</header>
-	<div id="main-filter" class="filter">
-		<label for="watched">Hide films I have already watched</label>
-		<input type="checkbox" name="watched" id="watched"> 
-	</div>
-
-	<div id="times">
-		<h2 class="filter-header">How much time do you have?</h2>	
-		<button class="film-times" data-runtime="90">1h 30min</button>
-		<button class="film-times" data-runtime="120">2h</button>
-		<button class="film-times" data-runtime="150">2h 30min</button>
-		<button class="film-times" data-runtime="180">3h</button>
-		<button class="film-times" data-runtime="99999">All the time in the world</button>
-	</div>
-	
-	<nav id="genres">
-		<div id="main-genres">
-			<h2 class="filter-header">What genres do you like?</h2>	
-    		<div class="genre-selector">
-				<input id="action" type="checkbox" class="genre-items" value="action">
-        		<label for="action">action</label>    
-    		</div>  
-    		<div class="genre-selector">
-				<input id="comedy" type="checkbox" class="genre-items" value="comedy">
-        		<label for="comedy">comedy</label>    
-    		</div>  		
-    		<div class="genre-selector">
-				<input id="drama" type="checkbox" class="genre-items" value="drama">
-        		<label for="drama">drama</label>    
-    		</div>  
-    		<div class="genre-selector">
-				<input id="horror" type="checkbox" class="genre-items" value="horror">
-        		<label for="horror">horror</label>    
-    		</div>  
-    		<div class="genre-selector">
-				<input id="sci-fi" type="checkbox" class="genre-items" value="sci-fi">
-        		<label for="sci-fi">sci-fi</label>    
-    		</div>      		
+		<div id="theme-switcher">
+			<label for="theme">Night theme</label>
+			<input type="checkbox" name="theme" id="theme">
 		</div>
-		<a class="cta-expand" href="#">See all genres</a>
-		<div id="extra-genres"></div>
-	</nav>
+	</header>
 
-	<nav id="decades">
-		<h2 class="filter-header">Which era are you interested on?</h2>
-		<label for="min-decade">From</label>
-		<select name="decades" id="min-decade"></select>
-		<label for="max-decade">To</label>
-		<select name="decades" id="max-decade"></select>
-	</nav>
-
+	<div id="filters">
+		<div id="main-filter" class="filter">
+			<label for="watched">Hide films I have watched</label>
+			<input type="checkbox" name="watched" id="watched"> 
+		</div>
+	
+		<div id="times">
+			<h2 class="filter-header">How much time do you have?</h2>	
+			<button class="film-times" data-runtime="90">1h 30min</button>
+			<button class="film-times" data-runtime="120">2h</button>
+			<button class="film-times" data-runtime="150">2h 30min</button>
+			<button class="film-times" data-runtime="180">3h</button>
+			<button class="film-times" data-runtime="99999">All the time in the world</button>
+		</div>
+		
+		<nav id="genres">
+			<div id="main-genres">
+				<h2 class="filter-header">What genres do you like?</h2>	
+				<div class="genre-selector">
+					<input id="action" type="checkbox" class="genre-items" value="action">
+					<label for="action">action</label>    
+				</div>  
+				<div class="genre-selector">
+					<input id="comedy" type="checkbox" class="genre-items" value="comedy">
+					<label for="comedy">comedy</label>    
+				</div>  		
+				<div class="genre-selector">
+					<input id="drama" type="checkbox" class="genre-items" value="drama">
+					<label for="drama">drama</label>    
+				</div>  
+				<div class="genre-selector">
+					<input id="horror" type="checkbox" class="genre-items" value="horror">
+					<label for="horror">horror</label>    
+				</div>  
+				<div class="genre-selector">
+					<input id="sci-fi" type="checkbox" class="genre-items" value="sci-fi">
+					<label for="sci-fi">sci-fi</label>    
+				</div>      		
+			</div>
+			<a class="cta-expand" href="#">See all genres</a>
+			<div id="extra-genres"></div>
+		</nav>
+	
+		<nav id="decades">
+			<h2 class="filter-header">Which era are you interested on?</h2>
+			<label for="min-decade">From</label>
+			<select name="decades" id="min-decade"></select>
+			<label for="max-decade">To</label>
+			<select name="decades" id="max-decade"></select>
+		</nav>
+	
+	</div>
 	<div id="results"></div>
 
 	<ul id="films" class="row"></ul>

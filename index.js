@@ -9,6 +9,11 @@ let globalSearch = {
   watched: true,
 }
 
+document.querySelector("#theme").addEventListener("click",function(){ 
+  document.querySelector("body").classList.toggle("dark");
+  document.querySelector("label[for=theme]").innerHTML = (document.querySelector("label[for=theme]").innerText === "Day theme") ? "Night theme" : "Day theme";
+});
+
 const convertTime = (time) => {
   let hours = time / 60;
   if (time < 60){
@@ -24,7 +29,7 @@ const showAll = (data) => {
   let genres = film.genres.join(", ");
   let fullTime = convertTime(film.runtime);
   return `
-    <li class="col-md-4">
+    <li class="col-md-4 film-card">
       <p><span>Title:</span> ${film.title}</p>
       <p><span>Year:</span> ${film.year}</p>
       <p class="film-director"><span>Directed by:</span> ${film.director}</p>
@@ -37,14 +42,14 @@ const showAll = (data) => {
   }).join("");
 
   document.getElementById("results").style.display = "block";
-  document.getElementById("results").innerHTML = `<p>There are ${data.length} films on your library.</p>`;
+  document.getElementById("results").innerHTML = `<p>There are <strong>${data.length}</strong> films on your library.</p>`;
 
 const renderFilms = (films) => {
   document.getElementById("films").innerHTML = films.map(function(film){
     var genres = film.genres.join(", ");
     var fullTime = convertTime(film.runtime);
     return `
-      <li class="col-md-4">
+      <li class="col-md-4 film-card">
         <p><span>Title:</span> ${film.title}</p>
         <p><span>Year:</span> ${film.year}</p>
         <p class="film-director"><span>Directed by:</span> ${film.director}</p>
@@ -108,17 +113,16 @@ const generateDecades = (range) => { // Calculate the oldest and most recent yea
 generateDecades(decadeRange);
 
 // Generate the extra genres
-const allGenres = data.map(film => film.genres);
 const mainGenres = ["action","comedy","drama","horror","sci-fi"]
 const extraGenres = [];
 
-for (const genreList of allGenres) {
-  for (const genre of genreList){
+data.forEach(film => {
+  film.genres.forEach(genre => {
     if (!extraGenres.includes(genre) && !mainGenres.includes(genre)){
       extraGenres.push(genre);
     }
-  }
-}
+  });
+})
 
 extraGenres.sort();
 
@@ -144,9 +148,9 @@ let records;
 
 const getSpelling = (records) => {
   if (records === 1){
-    return `<p>${records} film matches your search.</p>`
+    return `<p><strong>${records}</strong> film matches your search.</p>`
   } else if (records > 1){
-    return `<p>${records} films match your search.</p>`;
+    return `<p><strong>${records}</strong> films match your search.</p>`;
   } 
   return `<p>Sorry, we don't have any matches for that request.</p>`;
 }
