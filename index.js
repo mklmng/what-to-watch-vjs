@@ -268,11 +268,13 @@ document.querySelector("#genres").addEventListener("change", function (event){
 
 const watchTrailer = (trailer) => {
   let trailerBlock = document.createElement('div');
-  trailerBlock.id = 'trailer-full-screen';
+  trailerBlock.id = 'overlay';
   trailerBlock.innerHTML = `
-  <div id="youtube-trailer">
-    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/${trailer}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-  </div>
+	<div class="overlay__wrapper">
+		<div class="overlay__wrapper__video-container">
+			<iframe class="overlay__wrapper__video-container__video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/${trailer}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+		</div>
+	</div>
   `;
   document.querySelector("body").appendChild(trailerBlock);
 }
@@ -283,8 +285,8 @@ document.addEventListener('click', function (event) {
     watchTrailer(clicked.getAttribute("data-trailer"));
   }
 
-  if (clicked.id == 'trailer-full-screen'){ // detect click on trailer overlay mode 
-      let el = document.querySelector("#trailer-full-screen");
+  if (clicked.id == 'overlay'){ // detect click on trailer overlay mode 
+      let el = document.querySelector("#overlay");
       el.parentNode.removeChild(el);
       return false;
   };
