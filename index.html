@@ -21,14 +21,26 @@
 			<label for="watched">Hide films I have watched</label>
 			<input type="checkbox" name="watched" id="watched"> 
 		</div>
-	
-		<div id="times">
+		<div id="runtimes">
 			<h2 class="filter-header">How much time do you have?</h2>	
-			<button class="film-times" data-runtime="90">1h 30min</button>
-			<button class="film-times" data-runtime="120">2h</button>
-			<button class="film-times" data-runtime="150">2h 30min</button>
-			<button class="film-times" data-runtime="180">3h</button>
-			<button class="film-times" data-runtime="99999">All the time in the world</button>
+			<div id="runtimes-filters">
+				<div class="runtime-filter">
+					<input type="radio" id="runtime1" class="film-times" name="runtime" value="90" />
+					<label for="runtime1">1h 30min</label>
+				</div><div class="runtime-filter">
+					<input type="radio" id="runtime2" class="film-times" name="runtime" value="120" />
+					<label for="runtime2">2h</label>
+				</div><div class="runtime-filter">
+					<input type="radio" id="runtime3" class="film-times" name="runtime" value="150" />
+					<label for="runtime3">2h 30min</label>
+				</div><div class="runtime-filter">
+					<input type="radio" id="runtime4" class="film-times" name="runtime" value="180" />
+					<label for="runtime4">3h</label>
+				</div><div class="runtime-filter">
+					<input type="radio" id="runtime5" class="film-times" name="runtime" value="all" />
+					<label for="runtime5">All the time in the world</label>
+				</div>				
+			</div>
 		</div>
 		
 		<nav id="genres">
@@ -37,25 +49,21 @@
 				<div class="genre-selector">
 					<input id="action" type="checkbox" class="genre-items" value="action">
 					<label for="action">action</label>    
-				</div>  
-				<div class="genre-selector">
+				</div><div class="genre-selector">
 					<input id="comedy" type="checkbox" class="genre-items" value="comedy">
 					<label for="comedy">comedy</label>    
-				</div>  		
-				<div class="genre-selector">
+				</div><div class="genre-selector">
 					<input id="drama" type="checkbox" class="genre-items" value="drama">
 					<label for="drama">drama</label>    
-				</div>  
-				<div class="genre-selector">
+				</div><div class="genre-selector">
 					<input id="horror" type="checkbox" class="genre-items" value="horror">
 					<label for="horror">horror</label>    
-				</div>  
-				<div class="genre-selector">
+				</div><div class="genre-selector">
 					<input id="sci-fi" type="checkbox" class="genre-items" value="sci-fi">
 					<label for="sci-fi">sci-fi</label>    
 				</div>      		
 			</div>
-			<a class="cta-expand" href="#">See all genres</a>
+			<span class="cta-expand">See all genres</span>
 			<div id="extra-genres"></div>
 		</nav>
 	
