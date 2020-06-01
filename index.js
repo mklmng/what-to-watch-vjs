@@ -149,7 +149,7 @@ const renderAll = (data) =>{
       document.querySelector("#results").style.display = "block";
       let resultsText = "";
       if (data.length){
-        (data.length < 2) ? resultsText = `<p>There is <strong>${data.length}</strong> match on your library.</p>` : resultsText = `<p>There are <strong>${data.length}</strong> matches on your library.</p>`;
+        (data.length < 2) ? resultsText = `<p class="film-results">There is <strong>${data.length}</strong> match on your library.</p>` : resultsText = `<p class="film-results">There are <strong>${data.length}</strong> matches on your library.</p>`;
       } else {
         resultsText = `<p>Sorry, no films match your search.</p>`;
       }
@@ -163,6 +163,26 @@ const renderAll = (data) =>{
   }
 
   renderFilms(data);
+
+  // Click on the matches to see them (mobile)
+  document.querySelector("#results").addEventListener("click",function(){
+    this.classList.toggle("return");
+
+    if(this.classList.contains("return")){
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      let elementCoordinates = document.querySelector("#results").getBoundingClientRect();
+      window.scrollTo({
+        top: Math.round(elementCoordinates.y),
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
+  });
 
   // Show & hide all the genres not just the most popular
 
