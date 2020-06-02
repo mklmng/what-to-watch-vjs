@@ -252,14 +252,15 @@ header{
 }
 
 .film-results::after{
-    content: '\2B9F';
+    content: '\27A4';
     display: inline-block;
     padding-left: 0.5rem;
     color: #F00;
 }
 
 .film-results.return::after{
-    content: '\2B9D';
+    content: '\27A4';
+    transform: scaleX(-1);
     display: inline-block;
     padding-left: 0.5rem;
     color: #F00;
