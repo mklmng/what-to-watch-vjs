@@ -20,7 +20,7 @@ const renderAll = (data) =>{
 
   extraGenres.sort();
 
-  document.querySelector("#extra-genres").insertAdjacentHTML('afterbegin',extraGenres.map(
+  document.querySelector("#extra-genres").insertAdjacentHTML('afterbegin', extraGenres.map(
     function(genre){
       return `<div class="genre-selector"><input id="${genre}" type="checkbox" class="genre-items" value="${genre}"><label for="${genre}">${genre}</label></div>`    
     }).join(""));
@@ -41,11 +41,11 @@ const renderAll = (data) =>{
 
   // Generate the newest and oldest decades
   Array.prototype.min = function(array){
-    return Math.min.apply(Math,array);
+    return Math.min.apply(Math, array);
   };
 
   Array.prototype.max = function(array){
-    return Math.max.apply(Math,array);
+    return Math.max.apply(Math, array);
   }
   
   let filmYears = data.map(film => film.year);
@@ -74,7 +74,7 @@ const renderAll = (data) =>{
     minDecade: minDecade,
     maxDecade: maxDecade,
     watched: true,
-    genre: []
+    genres: []
   }
 
   // Extend the array with some filter methods to chain them all at once on every filter interaction
@@ -94,12 +94,12 @@ const renderAll = (data) =>{
   }
 
   // Shows films of any genre on first load (empty genre array) and the ones that match at least one of the genres of our global genres
-  Array.prototype.filterByGenre = function(genre){
-    if (!genre.length){
+  Array.prototype.filterByGenre = function(genres){
+    if (!genres.length){
       return this
     } else{
       return this.filter((item)=>{
-        return item.genres.some(f=> genre.includes(f));
+        return item.genres.some(f=> genres.includes(f));
       })
     }
   }
@@ -114,8 +114,9 @@ const renderAll = (data) =>{
   const renderFilms = (data) => {
     let filmContainer = document.querySelector("#films");
     let filmResults = document.querySelector("#results");
-  
-    if (filmContainer.hasChildNodes()){ // if the films div has some results already, we remove all the previous children first and put the new content later
+
+    // If the films div has some results already, we remove all the previous children first and put the new content later
+    if (filmContainer.hasChildNodes()){ 
       while (filmContainer.firstChild) {
         filmContainer.removeChild(filmContainer.firstChild);
       }
@@ -127,19 +128,19 @@ const renderAll = (data) =>{
       }
     }
   
-    document.querySelector("#films").insertAdjacentHTML("afterbegin", data.map(function(film){   
-      let genres = film.genres.join(", ");
-      let fullTime = convertTime(film.runtime);
+    document.querySelector("#films").insertAdjacentHTML("afterbegin", data.map(({title, year, director, genres, runtime, trailer, id, whereToWatch}) => {   
+      let fullGenres = genres.join(", ");
+      let fullTime = convertTime(runtime);
       return `
         <li class="col-md-4 film-card">
-          <p><span>Title:</span> ${film.title}</p>
-          <p><span>Year:</span> ${film.year}</p>
-          <p class="film-director"><span>Directed by:</span> ${film.director}</p>
-          <p class="film-genre"><span>Genres:</span> ${genres}</p>
+          <p><span>Title:</span> ${title}</p>
+          <p><span>Year:</span> ${year}</p>
+          <p class="film-director"><span>Directed by:</span> ${director}</p>
+          <p class="film-genre"><span>Genres:</span> ${fullGenres}</p>
           <p class="film-runtime"><span>Runtime:</span> ${fullTime}</p>
           <div class="film-ctas">
-            <span id="${film.id}" class="film-trailer" data-trailer="${film.trailer}">trailer</span>
-            <a class="watch-film-cta" href="https://www.justwatch.com/uk/movie/${film.whereToWatch}" target="_blank" rel="noopener noreferrer">film</a>    
+            <span id="${id}" class="film-trailer" data-trailer="${trailer}">trailer</span>
+            <a class="watch-film-cta" href="https://www.justwatch.com/uk/movie/${whereToWatch}" target="_blank" rel="noopener noreferrer">film</a>    
           </div>
 
         </li>
@@ -151,21 +152,20 @@ const renderAll = (data) =>{
       if (data.length){
         (data.length < 2) ? resultsText = `<p class="film-results">There is <strong>${data.length}</strong> match on your library.</p>` : resultsText = `<p class="film-results">There are <strong>${data.length}</strong> matches on your library.</p>`;
       } else {
-        resultsText = `<p>Sorry, no films match your search.</p>`;
+        resultsText = `<p>Sorry, no films that match your search.</p>`;
       }
-      document.querySelector("#results").insertAdjacentHTML("afterbegin",resultsText);
+      document.querySelector("#results").insertAdjacentHTML("afterbegin", resultsText);
  }
 
   // Chain all the filters in one function
   function chainFilters(data, filters){
-    return data.filterByWatched(filters.watched).filterByRuntimes(filters.runtime).filterByGenre(filters.genre).filterByDecades(filters.minDecade,filters.maxDecade).filterByGenre(filters.genre);
-    // return data.filterByWatched(filters.watched).filterByRuntimes(filters.runtime).filterByGenre(filters.genre).filterByDecades(filters.minDecade,filters.maxDecade);
+    return data.filterByWatched(filters.watched).filterByRuntimes(filters.runtime).filterByGenre(filters.genres).filterByDecades(filters.minDecade, filters.maxDecade);
   }
 
   renderFilms(data);
 
   // Click on the matches to see them (mobile)
-  document.querySelector("#results").addEventListener("click",function(){
+  document.querySelector("#results .film-results").addEventListener("click", function(){
     this.classList.toggle("return");
 
     if(this.classList.contains("return")){
@@ -186,7 +186,7 @@ const renderAll = (data) =>{
 
   // Show & hide all the genres not just the most popular
 
-  document.querySelector(".cta-expand").addEventListener("click",function(){ 
+  document.querySelector(".cta-expand").addEventListener("click", function(){ 
     this.classList.toggle("expanded");
 
     let elementCoordinates = document.querySelector("#extra-genres").getBoundingClientRect();
@@ -236,22 +236,22 @@ const renderAll = (data) =>{
     renderFilms(chainFilters(data, filters));
   });
 
-  document.querySelector("#genres").addEventListener("change",function(e){
-    let genre = e.target.value;
+  document.querySelector("#genres").addEventListener("change", function(e){
+    let genres = e.target.value;
     if (e.target.value){
-      if (filters.genre.includes(genre)){
-        let updatedGenres = [...filters.genre];
-        updatedGenres.splice(updatedGenres.indexOf(genre), 1);
-        filters.genre = updatedGenres;
+      if (filters.genres.includes(genres)){
+        let updatedGenres = [...filters.genres];
+        updatedGenres.splice(updatedGenres.indexOf(genres), 1);
+        filters.genres = updatedGenres;
       } 
       else {
-        filters.genre.push(genre);
+        filters.genres.push(genres);
       } 
       renderFilms(chainFilters(data, filters));
     }
   });
 
-  document.querySelector("#min-decade").addEventListener("change",function(e){
+  document.querySelector("#min-decade").addEventListener("change", function(e){
     if (parseInt(e.target.value) > filters.maxDecade){ 
       filters.maxDecade = parseInt(e.target.value);
       document.querySelector("#max-decade").selectedIndex = -1;
@@ -262,7 +262,7 @@ const renderAll = (data) =>{
     renderFilms(chainFilters(data, filters));
   });
     
-  document.querySelector("#max-decade").addEventListener("change",function(e){
+  document.querySelector("#max-decade").addEventListener("change", function(e){
     if (parseInt(event.target.value) < filters.minDecade){
       filters.maxDecade = filters.minDecade;
       document.querySelector("#max-decade").selectedIndex = document.querySelector("#min-decade").selectedIndex;
@@ -275,7 +275,7 @@ const renderAll = (data) =>{
   const watchTrailer = (trailer) => {
     let trailerBlock = document.createElement('div');
     trailerBlock.id = 'overlay';
-    trailerBlock.insertAdjacentHTML("afterbegin",`
+    trailerBlock.insertAdjacentHTML("afterbegin", `
     <div class="overlay__wrapper">
       <div class="overlay__wrapper__video-container">
         <iframe class="overlay__wrapper__video-container__video" width="560" height="315" src="https://www.youtube-nocookie.com/embed/${trailer}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
@@ -300,7 +300,7 @@ const renderAll = (data) =>{
   })
   
   // The user can toggle the night mode to improve the UX in the dark
-  document.querySelector("#theme").addEventListener("click",function(){ 
+  document.querySelector("#theme").addEventListener("click", function(){ 
     document.querySelector("body").classList.toggle("dark");
     let themeLabel = document.querySelector("label[for=theme]");
     (themeLabel.innerText === "Day theme") ? themeLabel.innerText = "Night theme" : themeLabel.innerText = "Day theme";
