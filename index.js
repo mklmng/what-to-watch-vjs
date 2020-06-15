@@ -1,5 +1,5 @@
 // Fetch the data
-fetch('https://gist.githubusercontent.com/mklmng/fa894dc9c86dfed34e45063adcf1b73e/raw/aaebe9185fbb4b1ebcaf5343335168c9d2898f9a/Films.json'
+fetch('https://gist.githubusercontent.com/mklmng/fa894dc9c86dfed34e45063adcf1b73e/raw/eb77422572bbf7bee0ebaf86c02eb1fe99730195/Films.json'
 ).then((res) => res.json())
   .then((json) => {
     renderAll(json);
